@@ -2,6 +2,8 @@
 
 This Chrome extension allows you to quickly switch any GitHub repository URL to a variety of developer-focused tools (such as DeepWiki, GitHub.dev, etc.) while preserving the original path and query parameters.
 
+![screenshot](./public/extension_screenshot.png)
+
 ## Features
 
 * **Popup Menu** – Click the extension icon to open a list of tools. Selecting one instantly navigates the current GitHub tab to the chosen service.
