@@ -25,8 +25,6 @@ This Chrome extension allows you to quickly switch any GitHub repository URL to 
 4. Click **Load unpacked** and choose the project folder.
 5. Ensure the extension icon appears in your toolbar; pin it for quick access.
 
-> **Note**: You need to supply PNG icons in the `icons/` directory (16 × 16, 48 × 48, 128 × 128) or replace the paths in `manifest.json`.
-
 ## Project Structure
 
 ```
