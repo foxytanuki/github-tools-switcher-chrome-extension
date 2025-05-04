@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitHub Tools Switcher</title>
+  <style>
+    body {
+      width: 300px;
+      padding: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    h2 {
+      margin-top: 0;
+      color: #24292e;
+    }
+    .tool-button {
+      display: block;
+      width: 100%;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      background-color: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    .tool-button:hover {
+      background-color: #e1e4e8;
+    }
+    .tool-description {
+      color: #586069;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h2>GitHub Tools</h2>
+  <div id="tools-container">
+    <!-- Tools will be injected here by popup.js -->
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 
