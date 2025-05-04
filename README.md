@@ -7,7 +7,7 @@ This Chrome extension allows you to quickly switch any GitHub repository URL to 
 ## Features
 
 * **Popup Menu** – Click the extension icon to open a list of tools. Selecting one instantly navigates the current GitHub tab to the chosen service.
-* **Inline Toolbar** – When browsing a GitHub repository page, a small toolbar is injected below the top navigation to provide one-click access to all supported tools in a new tab.
+* **Inline Toolbar** – When browsing a GitHub repository page, a small toolbar (🛠️) is injected into the repository header for one-click access to all supported tools in a new tab.
 * **Non-destructive URL Transformation** – The repository path and query string are kept intact; only the domain is swapped (e.g. `github.com` → `deepwiki.com`).
 
 ## Supported Tools
@@ -35,21 +35,30 @@ This Chrome extension allows you to quickly switch any GitHub repository URL to 
 /popup.js           # Popup logic (domain switch)
 /content.js         # Injected toolbar on GitHub pages
 /icons/             # Icon images (not included)
+/public/            # Public assets like screenshots
 ```
 
-## Customisation
+## Customization
 
 Edit the `tools` arrays in both `popup.js` and `content.js` to add, remove, or adjust services:
 
 ```
+// In popup.js
 {
   name: 'New Tool',
   targetDomain: 'example.com',
   description: 'Short explanation'
 }
+
+// In content.js
+{
+  name: 'New Tool',
+  domain: 'example.com',
+  icon: '🔧'
+}
 ```
 
-For services that mount the repo at a sub-path, include it in `targetDomain` (e.g. `githubnext.com/projects/repo-visualization`).
+For services that mount the repo at a sub-path, include it in the domain (e.g. `githubnext.com/projects/repo-visualization`).
 
 ## License
 
