@@ -1,6 +1,6 @@
 ---
 Last updated: May 2025
-Version: 1.0.0
+Version: 1.0.1
 ---
 
 # Privacy Policy - GitHub Tools Switcher Chrome Extension
@@ -18,7 +18,6 @@ The GitHub Tools Switcher Chrome Extension:
 ## Permissions
 Our extension requires the following permissions for functionality purposes only:
 - "activeTab": To identify if the current tab is a GitHub repository
-- "scripting": To inject toolbar UI elements into GitHub pages
 - Host permissions for GitHub.com: To modify GitHub repository pages
 
 ## Third-Party Services
