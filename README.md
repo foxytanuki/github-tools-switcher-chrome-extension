@@ -17,7 +17,13 @@ This Chrome extension allows you to quickly switch any GitHub repository URL to 
 | DeepWiki | `deepwiki.com` | Wiki generation by Devin |
 | GitHub Dev | `github.dev` | Web-based VS Code editor |
 
-## Installation (Development Mode)
+## Installation 
+
+### Chrome extension store
+
+https://chromewebstore.google.com/detail/github-tools-switcher/occmgdpelgcpejcidonjlbgniapddenk
+
+### Development Mode
 
 1. **Clone or download** this repository.
 2. Open **chrome://extensions/** in Google Chrome.
