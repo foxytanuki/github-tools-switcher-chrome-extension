@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GitHub Tools Switcher",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Easily switch between GitHub and various developer tools that use GitHub URLs",
   "permissions": ["activeTab"],
   "host_permissions": ["*://github.com/*"],
