@@ -1,26 +1,43 @@
 function addButtonToRepositoryDetails() {
+  // Only add button on repository main pages, not on issues, PRs, discussions, etc.
+  const currentPath = window.location.pathname;
+  const pathParts = currentPath.split('/');
+  
+  // Skip if we're on a sub-page like issues, pull, discussions, actions, etc.
+  if (pathParts.length > 3) {
+    const thirdPart = pathParts[3];
+    const skipPages = ['issues', 'pull', 'pulls', 'discussions', 'actions', 'projects', 'wiki', 'security', 'insights', 'settings'];
+    if (skipPages.includes(thirdPart)) {
+      return;
+    }
+  }
+  
   // Look for the repository-details-container using multiple selectors to be more robust
   // First try by ID
   let detailsContainer = document.getElementById('repository-details-container');
   
-  // If not found, try common classes/selectors in the new GitHub UI design
+  // If not found, try more specific selectors for repository main page
   if (!detailsContainer) {
-    // Try to find by various header elements that might contain repository controls
+    // Try to find by various header elements that contain repository controls
+    // Use more specific selectors to avoid matching on non-repository pages
     const possibleSelectors = [
       '#repository-details-container',
-      '.repository-content .d-flex.mb-3',  // Common pattern in newer GitHub designs
-      '.repository-content .d-flex.flex-wrap.mb-3',
+      '#repository-container-header .pagehead-actions',  // More specific
+      '#repository-container-header ul.pagehead-actions', // Even more specific
       '.js-repo-nav .pagehead-actions',
-      '.pagehead-actions', // Traditional location for repository actions
-      '.UnderlineNav-actions',  // Another common location
-      '.file-navigation .d-flex' // File list header area
+      '.pagehead-actions:has([data-testid="notifications-subscriptions-menu-button-mobile"])', // Has Watch button
     ];
     
     for (const selector of possibleSelectors) {
-      const element = document.querySelector(selector);
-      if (element) {
-        detailsContainer = element;
-        break;
+      try {
+        const element = document.querySelector(selector);
+        if (element) {
+          detailsContainer = element;
+          break;
+        }
+      } catch (e) {
+        // :has() selector might not be supported in older browsers
+        continue;
       }
     }
   }
@@ -126,18 +143,46 @@ function addButtonToRepositoryDetails() {
 
 // Run on initial load
 window.addEventListener('load', () => {
-  addToolbarToGitHub();
-  addButtonToRepositoryDetails();
-  
-  // Initial check might be too early, try again after a short delay
-  setTimeout(() => {
+  // Only run on repository pages
+  if (isRepositoryPage()) {
+    addToolbarToGitHub();
     addButtonToRepositoryDetails();
-  }, 1500);
+    
+    // Initial check might be too early, try again after a short delay
+    setTimeout(() => {
+      addButtonToRepositoryDetails();
+    }, 1500);
+  }
 });
+
+// Helper function to check if we're on a repository page
+function isRepositoryPage() {
+  const path = window.location.pathname;
+  const pathParts = path.split('/');
+  
+  // Basic repository URL pattern: /owner/repo or /owner/repo/...
+  // Must have at least owner and repo name
+  if (pathParts.length < 3) return false;
+  
+  // Check if first part is empty (from leading slash), second is owner, third is repo
+  if (pathParts[0] === '' && pathParts[1] && pathParts[2]) {
+    // Exclude certain GitHub pages that are not repositories
+    const nonRepoPaths = ['settings', 'organizations', 'explore', 'marketplace', 'topics', 'trending', 'collections', 'events', 'sponsors'];
+    if (nonRepoPaths.includes(pathParts[1])) {
+      return false;
+    }
+    return true;
+  }
+  
+  return false;
+}
 
 // Observe DOM changes to detect SPA navigations and UI updates
 let lastUrl = location.href;
 const observer = new MutationObserver(() => {
+  // Only proceed if we're on a repository page
+  if (!isRepositoryPage()) return;
+  
   // Skip if we already have our button on the page
   if (document.querySelector('.github-tools-button') && 
       document.querySelector('.github-tools-toolbar')) return;
@@ -146,18 +191,22 @@ const observer = new MutationObserver(() => {
   const currentUrl = location.href;
   if (currentUrl !== lastUrl) {
     lastUrl = currentUrl;
-    addButtonToRepositoryDetails();
     
-    // GitHub often makes additional UI updates after URL change, try again after a short delay
-    setTimeout(() => {
+    // Only add button if we're still on a valid repository page
+    if (isRepositoryPage()) {
       addButtonToRepositoryDetails();
-    }, 1000);
+      
+      // GitHub often makes additional UI updates after URL change, try again after a short delay
+      setTimeout(() => {
+        addButtonToRepositoryDetails();
+      }, 1000);
+    }
   } else {
     // Even without URL changes, relevant UI elements might have been updated
     // Check specifically for the container or watch button appearance
     const watchButton = document.querySelector('[data-testid="notifications-subscriptions-menu-button-mobile"]');
     const container = document.getElementById('repository-details-container') || 
-                      document.querySelector('.pagehead-actions');
+                      document.querySelector('#repository-container-header .pagehead-actions');
     
     if ((watchButton || container) && !document.querySelector('.github-tools-button')) {
       addButtonToRepositoryDetails();
