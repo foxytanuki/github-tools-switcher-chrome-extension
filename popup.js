@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
       targetDomain: 'github.dev',
       description: 'Web-based VS Code editor'
     },
+    {
+      name: 'Code Wiki',
+      targetDomain: 'codewiki.google',
+      description: 'Code documentation by Google',
+      urlType: 'prefix'
+    },
   ];
 
   const toolsContainer = document.getElementById('tools-container');
@@ -43,7 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Only transform URLs on github.com
       if (currentUrl.hostname === 'github.com') {
-        const newUrl = `https://${tool.targetDomain}${currentUrl.pathname}${currentUrl.search}`;
+        let newUrl;
+        if (tool.urlType === 'prefix') {
+          // For tools like Code Wiki: codewiki.google/github.com/owner/repo
+          newUrl = `https://${tool.targetDomain}/github.com${currentUrl.pathname}${currentUrl.search}`;
+        } else {
+          // Standard domain replacement
+          newUrl = `https://${tool.targetDomain}${currentUrl.pathname}${currentUrl.search}`;
+        }
         chrome.tabs.update(tab.id, { url: newUrl });
       }
     });

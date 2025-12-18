@@ -37,7 +37,6 @@ function addButtonToRepositoryDetails() {
         }
       } catch {
         // :has() selector might not be supported in older browsers
-        continue;
       }
     }
   }
@@ -96,6 +95,7 @@ function addButtonToRepositoryDetails() {
     const tools = [
       { name: 'DeepWiki', domain: 'deepwiki.com', icon: '📚' },
       { name: 'GitHub Dev', domain: 'github.dev', icon: '💻' },
+      { name: 'Code Wiki', domain: 'codewiki.google', icon: '📖', urlType: 'prefix' },
     ];
     
     for (const tool of tools) {
@@ -105,8 +105,14 @@ function addButtonToRepositoryDetails() {
       
       try {
         const url = new URL(window.location.href);
-        url.hostname = tool.domain;
-        link.href = url.toString();
+        if (tool.urlType === 'prefix') {
+          // For tools like Code Wiki: codewiki.google/github.com/owner/repo
+          link.href = `https://${tool.domain}/github.com${url.pathname}${url.search}`;
+        } else {
+          // Standard domain replacement
+          url.hostname = tool.domain;
+          link.href = url.toString();
+        }
       } catch (e) {
         console.error('GitHub Tools Switcher: Failed to construct URL', e);
         continue;
