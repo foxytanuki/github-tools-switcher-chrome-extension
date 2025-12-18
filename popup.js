@@ -51,11 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentUrl.hostname === 'github.com') {
         let newUrl;
         if (tool.urlType === 'prefix') {
-          // For tools like Code Wiki: codewiki.google/github.com/owner/repo
-          newUrl = `https://${tool.targetDomain}/github.com${currentUrl.pathname}${currentUrl.search}`;
+          // For tools like Code Wiki: only use /owner/repo (first two path segments)
+          const pathParts = currentUrl.pathname.split('/').filter(Boolean);
+          const repoPath = pathParts.length >= 2 ? `/${pathParts[0]}/${pathParts[1]}` : currentUrl.pathname;
+          newUrl = `https://${tool.targetDomain}/github.com${repoPath}`;
         } else {
           // Standard domain replacement
-          newUrl = `https://${tool.targetDomain}${currentUrl.pathname}${currentUrl.search}`;
+          newUrl = `https://${tool.targetDomain}${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`;
         }
         chrome.tabs.update(tab.id, { url: newUrl });
       }

@@ -106,8 +106,10 @@ function addButtonToRepositoryDetails() {
       try {
         const url = new URL(window.location.href);
         if (tool.urlType === 'prefix') {
-          // For tools like Code Wiki: codewiki.google/github.com/owner/repo
-          link.href = `https://${tool.domain}/github.com${url.pathname}${url.search}`;
+          // For tools like Code Wiki: only use /owner/repo (first two path segments)
+          const pathParts = url.pathname.split('/').filter(Boolean);
+          const repoPath = pathParts.length >= 2 ? `/${pathParts[0]}/${pathParts[1]}` : url.pathname;
+          link.href = `https://${tool.domain}/github.com${repoPath}`;
         } else {
           // Standard domain replacement
           url.hostname = tool.domain;
