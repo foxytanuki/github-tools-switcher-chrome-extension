@@ -35,7 +35,7 @@ function addButtonToRepositoryDetails() {
           detailsContainer = element;
           break;
         }
-      } catch (e) {
+      } catch {
         // :has() selector might not be supported in older browsers
         continue;
       }
@@ -102,9 +102,15 @@ function addButtonToRepositoryDetails() {
       const link = document.createElement('a');
       link.textContent = `${tool.icon} ${tool.name}`;
       link.style.cssText = 'display: block; padding: 6px 12px; text-decoration: none; color: #24292e; cursor: pointer;';
-      const url = new URL(window.location.href);
-      url.hostname = tool.domain;
-      link.href = url.toString();
+      
+      try {
+        const url = new URL(window.location.href);
+        url.hostname = tool.domain;
+        link.href = url.toString();
+      } catch (e) {
+        console.error('GitHub Tools Switcher: Failed to construct URL', e);
+        continue;
+      }
       link.target = '_blank';
       
       link.addEventListener('mouseover', () => {
@@ -147,7 +153,6 @@ function addButtonToRepositoryDetails() {
 window.addEventListener('load', () => {
   // Only run on repository pages
   if (isRepositoryPage()) {
-    addToolbarToGitHub();
     addButtonToRepositoryDetails();
     
     // Initial check might be too early, try again after a short delay
