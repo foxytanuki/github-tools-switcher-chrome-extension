@@ -46,7 +46,7 @@ function addButtonToRepositoryDetails() {
   const button = document.createElement('button');
   button.className = 'github-tools-button btn btn-sm';
   button.setAttribute('aria-label', 'Open GitHub Tools');
-  button.innerHTML = '<span>🛠️</span>';
+  button.textContent = '🛠️';
   button.style.cssText = 'display: inline-flex; align-items: center; justify-content: center; height: 29px;';
   
   // Explicitly set border-radius to ensure it's uniform on all corners
@@ -85,7 +85,9 @@ function addButtonToRepositoryDetails() {
       const link = document.createElement('a');
       link.textContent = `${tool.icon} ${tool.name}`;
       link.style.cssText = 'display: block; padding: 6px 12px; text-decoration: none; color: #24292e; cursor: pointer;';
-      link.href = window.location.href.replace('github.com', tool.domain);
+      const url = new URL(window.location.href);
+      url.hostname = tool.domain;
+      link.href = url.toString();
       link.target = '_blank';
       
       link.addEventListener('mouseover', () => {
