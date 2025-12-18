@@ -16,8 +16,9 @@ This Chrome extension allows you to quickly switch any GitHub repository URL to 
 |------|--------|---------|
 | DeepWiki | `deepwiki.com` | Wiki generation by Devin |
 | GitHub Dev | `github.dev` | Web-based VS Code editor |
+| Code Wiki | `codewiki.google` | Code documentation by Google |
 
-## Installation 
+## Installation
 
 ### Chrome extension store
 
@@ -60,10 +61,16 @@ Edit the `tools` arrays in both `popup.js` and `content.js` to add, remove, or a
   domain: 'example.com',
   icon: '🔧'
 }
-```
 
-For services that mount the repo at a sub-path, include it in the domain (e.g. `githubnext.com/projects/repo-visualization`).
+// For services that use prefix-style URLs (e.g. codewiki.google/github.com/owner/repo)
+{
+  name: 'Prefix Tool',
+  targetDomain: 'example.com',
+  description: 'Uses prefix URL format',
+  urlType: 'prefix'
+}
+```
 
 ## License
 
-MIT © 2025 foxytanuki 
+MIT © 2025 foxytanuki
